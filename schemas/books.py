@@ -1,21 +1,26 @@
 from pydantic import BaseModel
 from typing import Optional
 
-books = {}
 
 class BookBase(BaseModel):
-    id: int
     title: str
     author: str
     is_available: bool = True
 
 
+class Book(BookBase):
+    id: int    
+
+
 class CreateBook(BookBase):
-    pass
+    is_available: Optional[bool] = True
 
 
 class UpdateBook(BookBase):
-    id: Optional[int] = None
     title: Optional[str] = None
-    author: Optional[str] = None 
+    author: Optional[str] = None
+    is_available: Optional[bool] = True 
+
+
+books: dict[int:Book] = {}    
    

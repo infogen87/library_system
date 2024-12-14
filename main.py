@@ -7,7 +7,7 @@ app = FastAPI()
 
 app.include_router(users_router, prefix="/users", tags=["users"])
 app.include_router(books_router, prefix="/books", tags=["books"])
-app.include_router(records_router, prefix="/book_records", tags=["book_records"])
+app.include_router(records_router, prefix="/borrow_records", tags=["book_records"])
 
 @app.get("/")
 def home():

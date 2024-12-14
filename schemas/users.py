@@ -1,24 +1,27 @@
 from pydantic import BaseModel
 from typing import Optional
 
-users = {}
+
 
 class UserBase(BaseModel):
-    id: int
     name: str
     email: str
     is_active: bool = True
 
 
+class User(UserBase):
+    id: int
+
 
 class CreateUser(UserBase):
-    id: 
+    is_active: Optional[bool] = True
 
 
-class UpdateUser(UserBase):
-    id: Optional[int] = None 
+
+class UpdateUser(BaseModel):
     name: Optional[str] = None
     email: Optional[str] = None
+    is_active: Optional[bool] = None
 
 
-
+users: dict[int: User] = {}

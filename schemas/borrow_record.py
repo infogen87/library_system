@@ -1,8 +1,28 @@
 from pydantic import BaseModel
+from datetime import date
+from typing import Optional
 
 
-class BorrowRecord(BaseModel):
-    id: int
+
+
+class BorrowRecordBase(BaseModel):
     user_id: int
     book_id: int
-    borrow_date: 
+    borrow_date: date
+    return_date: Optional[date] = None
+
+
+class BorrowRecord(BorrowRecordBase):
+    id: int
+
+
+# class UpdateRecord(BorrowRecordBase):
+    
+
+
+# class CreateRecord(BorrowRecordBase):
+#     pass
+
+
+
+borrow_records: dict[int: BorrowRecord] = {}
