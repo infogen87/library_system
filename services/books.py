@@ -32,22 +32,10 @@ class BookCrud:
 
     @staticmethod
     def delete_book_by_id(book_id: int):
-        # if book_id not in books:
-
-        book: Book = books.get(book)
-        print(book)
-        # for book in books: 
-        #     if book.id == book_id:
-        #         del books[book]
-        #         return True
-            # raise HTTPException(status_code=404, detail="book not found!")
-            
-        # for book in books:
-        #     if book[id] == book_id:
-        #         del books[book]
-        #         return
-         
-
+        if book_id not in books:
+            raise HTTPException(status_code=404, detail="book not found!")
+        del books[book_id]
+        return
 
 
     @staticmethod

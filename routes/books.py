@@ -30,19 +30,17 @@ def update_book(book_id: int, book_data: UpdateBook):
 
 @books_router.delete("/{book_id}", status_code=200)
 def delete_book(book_id: int):
-    result = BookCrud.delete_book_by_id(book_id)
-    if result == True:
-        return {"message": "book deleted successfully"}
-    return {"message":"couldnt delete book"}
+    BookCrud.delete_book_by_id(book_id)
+    return {"message": "book deleted successfully"}
 
 
-@books_router.patch("/{book_id}/make unavailable", status_code=200)
+@books_router.patch("/{book_id}/make_unavailable", status_code=200)
 def make_book_unavailable(book_id: int):
     book = BookCrud.mark_book_as_unavailable(book_id) 
     return {"message": f"the book {book.title} is now unavailable!"}
 
 
-@books_router.patch("/{book_id}/make available", status_code=200)
+@books_router.patch("/{book_id}/make_available", status_code=200)
 def make_book_available(book_id: int):
     book = BookCrud.mark_book_as_available(book_id)  
     return {"message": f"the book {book.title} is now available!"}     

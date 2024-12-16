@@ -36,9 +36,9 @@ class UserCrud:
 
     @staticmethod
     def delete_user_by_id(user_id: int):
-        # if user_id not in users:
-        #     raise HTTPException(status_code=404, detail="user not found!")
-        # del users[user_id]
+        if user_id not in users:
+            raise HTTPException(status_code=404, detail="user not found!")
+        del users[user_id]
         return
         
     

@@ -19,7 +19,7 @@ def get_user_borrow_records(user_id: int):
 
 @records_router.post("/", status_code=status.HTTP_201_CREATED)
 def borrow_book(user_id: int, book_id: int):
-    borrow_record = BookRecordCrud.borrow_another_book(user_id, book_id)
+    borrow_record = BookRecordCrud.borrow_a_book(user_id, book_id)
     return {"message": "book successfully borrowed", "new borrow record": borrow_record}
 
 

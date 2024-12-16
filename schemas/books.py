@@ -19,8 +19,9 @@ class CreateBook(BookBase):
 class UpdateBook(BookBase):
     title: Optional[str] = None
     author: Optional[str] = None
-    is_available: Optional[bool] = True 
+    is_available: Optional[bool] = None 
 
 
-books: dict[int:Book] = {}    
+books: dict[int: Book] = {}    
    
+  

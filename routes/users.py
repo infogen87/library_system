@@ -28,7 +28,7 @@ def update_user(user_id: int, user_data: UpdateUser):
     return {"message": "user updated successfully", "updated user": user} 
 
 
-@users_router.delete("/{user_id}", status_code=status.HTTP_200_OK)
+@users_router.delete("/{user_id}", status_code=200)
 def delete_user(user_id: int):
     UserCrud.delete_user_by_id(user_id)
     return {"message": "user deleted successfully"}
