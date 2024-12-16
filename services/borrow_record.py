@@ -1,51 +1,60 @@
 
-from schemas.users import users, UserBase
-from schemas.books import BookBase, books
-from schemas.borrow_record import borrow_records
+from schemas.users import users, UserBase, User
+from schemas.books import BookBase, books, Book
+from schemas.borrow_record import borrow_records, BorrowRecord
 from fastapi import HTTPException
+import datetime
 
 
 
 
 
 class BookRecordCrud:
-    
-
-
     @staticmethod
-    def borrow_book(user_id: int, book_id: int):
+    def borrow_another_book(user_id: int, book_id: int):
         user: UserBase = users.get(user_id)
         book: BookBase = books.get(book_id)
         if not user:
             raise HTTPException(status_code=404, detail="user not found!")
         if user.is_active == False:
             raise HTTPException(status_code=403, detail="user isn't active and can't borrow books")
+        if not book:
+            raise HTTPException(status_code=404, detail="the book you want to borrow doesn't exist")
         if book.is_available == False:
             raise HTTPException(status_code=404, detail="this book has been borrowed")
+        book.is_available = False
         borrow_record_id = len(borrow_records) + 1
-
-        # new_borrow_record = {
-        #     "id": borrow_record_id,
-        #     "user_id": 
-        # }
-        # book.is_available = False
-        # return {"message": "the book {book.title} has been borrowed successfully", "borrow_record":  }
-    
-
-    # @staticmethod
-    # def return_book()
-        
+        borrow_record = BorrowRecord(id=borrow_record_id, user_id=user.id, book_id=book.id, borrow_date=datetime.now())
+        borrow_records[borrow_record_id] = borrow_record
+        return borrow_record
+       
 
     @staticmethod
     def view_borrow_records_of_user(id_of_user: int):
-        user = users.get(id_of_user) 
+        user: User = users.get(id_of_user) 
         if not user:
             raise HTTPException(status_code=404, detail="user not found!")
         user_borrow_record = {}
         for record in borrow_records:
-            if record.user_id == id_of_user:
+            if record.user_id == user:
                 user_borrow_record[record.id] = record
-        return {"users borrow records": user_borrow_record}        
+        return user_borrow_record
+    
+
+    @staticmethod
+    def return_borrowed_book(book_id: int):
+        book: Book= books.get(book_id)
+        if not book:
+            raise HTTPException(status_code=404, detail="book not found")
+        for record in borrow_records:
+            if record[book_id] == book_id:
+                record[return_date] = datetime.now()
+                book.is_available = True
+
+            raise HTTPException(status_code=404, detail="this book wasnt borrowed!")
+
+ 
+
 
 
 

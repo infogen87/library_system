@@ -16,12 +16,10 @@ class BorrowRecord(BorrowRecordBase):
     id: int
 
 
-# class UpdateRecord(BorrowRecordBase):
+class CreateBorrowRecord(BorrowRecordBase):
+    pass
     
 
-
-# class CreateRecord(BorrowRecordBase):
-#     pass
 
 
 

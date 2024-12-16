@@ -1,4 +1,6 @@
 from schemas.books import books, Book, CreateBook, UpdateBook
+
+
 from fastapi import HTTPException
 class BookCrud:
     @staticmethod
@@ -6,7 +8,7 @@ class BookCrud:
         book: Book = books.get(id)
         if not book:
             raise HTTPException(status_code=404, detail="book not found!")
-        return {"book": book}
+        return book
     
 
     @staticmethod
@@ -14,7 +16,7 @@ class BookCrud:
         book_id = len(books) + 1
         book = Book(id=book_id, **book_data.model_dump())
         books[book_id] = book
-        return {"message": "book created successfully", "new book": book}
+        return book
         
         
 
@@ -25,16 +27,26 @@ class BookCrud:
             raise HTTPException(status_code=404, detail="book not found!")
         for k, v in book_data.model_dump().items():
             setattr(book, k, v)
-        return {"message": "book updated successfully", "updated book": book}
+        return book
 
 
     @staticmethod
-    def delete_book_by_id(id: int):
-        book: Book = books.get(id)
-        if book not in books:
-            raise HTTPException(status_code=404, detail="book not found!")
-        del books[id]
-        return {"message": "book deleted successfully"}
+    def delete_book_by_id(book_id: int):
+        # if book_id not in books:
+
+        book: Book = books.get(book)
+        print(book)
+        # for book in books: 
+        #     if book.id == book_id:
+        #         del books[book]
+        #         return True
+            # raise HTTPException(status_code=404, detail="book not found!")
+            
+        # for book in books:
+        #     if book[id] == book_id:
+        #         del books[book]
+        #         return
+         
 
 
 
@@ -46,7 +58,7 @@ class BookCrud:
         if book.is_available == False:
             raise HTTPException(status_code=400, detail="book already unavailable!")
         book.is_available = False
-        return {"message": f"the book {book.title} is now unavailable!"}
+        return book
     
 
     @staticmethod
@@ -57,4 +69,4 @@ class BookCrud:
         if book.is_available == True:
             raise HTTPException(status_code=400, detail="book is already available!")
         book.is_available = True
-        return {"message": f"the book {book.title} is now available!"}
+        return book
