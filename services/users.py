@@ -1,11 +1,11 @@
 from schemas.users import users, CreateUser, UpdateUser, User
 from fastapi import HTTPException
+from uuid import UUID, uuid4
 
 
 class UserCrud:
     @staticmethod
-    def get_user_by_id(id: int):
-
+    def get_user_by_id(id: UUID):
         user: User = users.get(id)
         if not user:
             raise HTTPException(status_code=404, detail="user not found!")
@@ -14,7 +14,7 @@ class UserCrud:
 
     @staticmethod
     def create_new_user(user_data: CreateUser):
-        user_id = len(users) + 1
+        user_id = uuid4()
         user = User(id=user_id, **user_data.model_dump())
         users[user_id] = user
         return user
@@ -22,7 +22,7 @@ class UserCrud:
     
 
     @staticmethod
-    def update_user_by_id(id: int, user_data: UpdateUser):
+    def update_user_by_id(id: UUID, user_data: UpdateUser):
         user: User = users.get(id)
         if not user:
             raise HTTPException(status_code=404, detail="user not found!")
@@ -35,7 +35,7 @@ class UserCrud:
       
 
     @staticmethod
-    def delete_user_by_id(user_id: int):
+    def delete_user_by_id(user_id: UUID):
         if user_id not in users:
             raise HTTPException(status_code=404, detail="user not found!")
         del users[user_id]
@@ -44,7 +44,7 @@ class UserCrud:
     
 
     @staticmethod
-    def deactivate_user_by_id(id: int):
+    def deactivate_user_by_id(id: UUID):
         user: User = users.get(id)
         if not user:
             raise HTTPException(status_code=404, detail="user not found!")
@@ -55,7 +55,7 @@ class UserCrud:
 
 
     @staticmethod
-    def activate_user_by_id(id: int):
+    def activate_user_by_id(id: UUID):
         user: User = users.get(id)
         if not user:
             raise HTTPException(status_code=404, detail="user not found!")

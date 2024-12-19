@@ -1,10 +1,11 @@
 from schemas.books import books, Book, CreateBook, UpdateBook
-
-
+from uuid import UUID, uuid4
 from fastapi import HTTPException
+
+
 class BookCrud:
     @staticmethod
-    def get_book_by_id(id: int):
+    def get_book_by_id(id: UUID):
         book: Book = books.get(id)
         if not book:
             raise HTTPException(status_code=404, detail="book not found!")
@@ -13,7 +14,7 @@ class BookCrud:
 
     @staticmethod
     def create_new_book(book_data: CreateBook):
-        book_id = len(books) + 1
+        book_id = uuid4()
         book = Book(id=book_id, **book_data.model_dump())
         books[book_id] = book
         return book
@@ -21,7 +22,7 @@ class BookCrud:
         
 
     @staticmethod
-    def update_book_by_id(id: int, book_data: UpdateBook):
+    def update_book_by_id(id: UUID, book_data: UpdateBook):
         book: Book = books.get(id)
         if not book:
             raise HTTPException(status_code=404, detail="book not found!")
@@ -31,7 +32,7 @@ class BookCrud:
 
 
     @staticmethod
-    def delete_book_by_id(book_id: int):
+    def delete_book_by_id(book_id: UUID):
         if book_id not in books:
             raise HTTPException(status_code=404, detail="book not found!")
         del books[book_id]
@@ -39,7 +40,7 @@ class BookCrud:
 
 
     @staticmethod
-    def mark_book_as_unavailable(id: int):
+    def mark_book_as_unavailable(id: UUID):
         book: Book = books.get(id)
         if not book:
             raise HTTPException(status_code=404, detail="book not found!")
@@ -50,7 +51,7 @@ class BookCrud:
     
 
     @staticmethod
-    def mark_book_as_available(id: int):
+    def mark_book_as_available(id: UUID):
         book: Book = books.get(id)
         if not book:
             raise HTTPException(status_code=404, detail="book not found!")

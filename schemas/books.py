@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional
-
+from uuid import UUID
 
 class BookBase(BaseModel):
     title: str
@@ -8,9 +8,8 @@ class BookBase(BaseModel):
     is_available: bool = True
 
 
-class Book(BookBase):
-    id: int    
-
+class Book(BookBase):     
+    id: UUID
 
 class CreateBook(BookBase):
     is_available: Optional[bool] = True
