@@ -1,6 +1,6 @@
 from pydantic import BaseModel, EmailStr
 from typing import Optional
-from uuid import UUID
+from uuid import UUID, uuid4
 
 
 
@@ -25,4 +25,22 @@ class UpdateUser(BaseModel):
     is_active: Optional[bool] = None
 
 
-users: dict[int: User] = {}
+users: dict[int, User] = {
+    1: User(
+        id=str(uuid4()),
+        name="john",
+        email="john@gmail.com",
+        is_active=True
+    ),
+    2: User(
+        id=str(uuid4()),
+        name="sara",
+        email="sara40@gmail.com",
+        is_active=True
+    ),
+    3: User(
+        id=str(uuid4()),
+        name="ebitari",
+        email="ebi@gmail.com",
+        is_active=False  
+    )}

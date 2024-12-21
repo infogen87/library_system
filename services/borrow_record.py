@@ -3,8 +3,8 @@ from schemas.users import users, User
 from schemas.books import books, Book
 from schemas.borrow_record import borrow_records, BorrowRecord, CreateBorrowRecord
 from fastapi import HTTPException
-import datetime
-from uuid import uuid4
+from datetime import date
+from uuid import UUID, uuid4
 
 
 
@@ -29,36 +29,61 @@ class BookRecordCrud:
         borrow_book_data = BorrowRecord(id=borrow_record_id, **borrow_data.model_dump())
         borrow_records[borrow_record_id] = borrow_book_data
         return borrow_book_data
-
-
-    @staticmethod
-    def view_borrow_records_of_user(id_of_user: uuid4):
-        user: User = users.get(id_of_user) 
-        if not user:
-            raise HTTPException(status_code=404, detail="user not found!")
-        user_borrow_record = {}
-        for record in borrow_records:
-            if record.user_id == user.id:
-                # user_borrow_record_id = len(user_borrow_record) + 1
-                user_borrow_record[len(user_borrow_record) + 1] = record
-        return user_borrow_record
     
 
+
+
     @staticmethod
-    def return_borrowed_book(book_id: int):
-        book: Book = books.get(book_id)
+    def get_borrow_records_by_user(user_id: UUID):
+        user: User = users.get(user_id)
+        if not user:
+            raise HTTPException(status_code=404, detail="user not found")
+        user_records = []
+        for record_id, record in borrow_records.items():
+            if record.user_id == user_id:
+                user_records.append(record_id)
+        if not user_records:
+            raise HTTPException(status_code=404, detail="User has no borrow records.")
+        else:
+            return user_records  
+            
+            
+    def get_borrow_records_by_user(user_id: UUID):
+        user = users.get(user_id)
+        if not user:
+            raise HTTPException(status_code=404, detail="user not found")
+
+        user_records = [record_id for record_id, record in borrow_records.items() if record.user_id == user_id]
+
+        if not user_records:
+            raise HTTPException(status_code=404, detail="User has no borrow records.")
+
+        return user_records
+        
+    
+
+
+
+    @staticmethod
+    def return_borrowed_book(id_of_book: UUID):
+        book: Book = books.get(id_of_book)
         if not book:
             raise HTTPException(status_code=404, detail="book not found")
-        if book.is_available == True:
-            raise HTTPException(status_code=400, detail="book already returned,or was not borrwed")
-        for record in borrow_records:
-            if record.book_id == book_id:
-                
-                borrow_records[record.return_date] = datetime.now()
+        for record in borrow_records.items():
+            if record["book_id"] == id_of_book:
                 book.is_available = True
+                record["return_date"] = date.today()
+                return record
+            raise HTTPException(status_code=404, detail="book has wasnt borrowed")
+           
+        
+        
 
-            raise HTTPException(status_code=404, detail="this book was'nt borrowed!")
-        return 
+        
+
+
+
+
  
 
 

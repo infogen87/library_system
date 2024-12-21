@@ -14,7 +14,8 @@ def get_all_borrow_records():
 
 @records_router.get("/{user_id}/borrow_records", status_code=status.HTTP_200_OK)
 def get_user_borrow_records(user_id: UUID):
-    BookRecordCrud.view_borrow_records_of_user(user_id)
+    result = BookRecordCrud.view_user_borrow_records(user_id)
+    return result
 
  
 @records_router.post("/", status_code=201)
@@ -24,8 +25,9 @@ def borrow_book(borrow_book_data: CreateBorrowRecord):
 
 
 @records_router.patch("/{book_id}/return_book")
-def return_book():
-    pass
+def return_book(book_id: UUID):
+    return_data = BookRecordCrud.return_borrowed_book(book_id)
+    return {"message": "book returned successfully", "return data": return_data}
 
 
 

@@ -43,6 +43,6 @@ def deactivate_user(user_id: UUID):
 
 
 @users_router.patch("/{user_id}/activate", status_code=status.HTTP_200_OK)
-def activate_user(user_id: int):
+def activate_user(user_id: UUID):
     user = UserCrud.activate_user_by_id(user_id)
     return {"message": f"user {user.name} has been activated"}           

@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from datetime import date
 from typing import Optional
-from uuid import UUID
+from uuid import UUID, uuid4
 
 
 
@@ -24,4 +24,23 @@ class CreateBorrowRecord(BorrowRecordBase):
     return_date: Optional[date] = None
     
 
-borrow_records: dict[int: BorrowRecord] = {}
+borrow_records: dict[int, BorrowRecord] = {
+    # 1: BorrowRecord(
+    #     user_id=str(uuid4()),
+    #     book_id=str(uuid4()),
+    #     borrow_date=date.today(),
+    #     return_date=date.today()
+    # ),
+    # 2: BorrowRecord(
+    #     user_id=str(uuid4()),
+    #     book_id=str(uuid4()),
+    #     borrow_date=date.today(),
+    #     return_date=date.today()
+    # ),
+    # 3: BorrowRecord(
+    #     user_id=str(uuid4()),
+    #     book_id=str(uuid4()),
+    #     borrow_date=date.today(),
+    #     return_date=date.today()  
+    # )
+}
